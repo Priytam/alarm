@@ -1,9 +1,10 @@
 # AlarmClock
- AlarmClock with the features of 
+ AlarmClock with the features of
+ - Alarm to wakeup 
  - Sync and Async Task
  - Scheduling Task
  - Recurring Task
- -
+ 
 
 # Basic Example and Usage
 
