@@ -11,9 +11,6 @@ public abstract class RecurringTask extends Task {
     private boolean runImmediately = true;
     private boolean executionTimeImpactsInterval = false;
 
-    protected RecurringTask() {
-    }
-
     public RecurringTask(long wakeupIntervalMilli) {
         this(wakeupIntervalMilli, false);
     }
@@ -101,6 +98,7 @@ public abstract class RecurringTask extends Task {
         synchronized (getSyncObject()) {
             setStop(false);
             registerForWakeup(runImmediately ? 100 : getWakeupInterval());
+            startClock();
         }
     }
 
@@ -112,6 +110,7 @@ public abstract class RecurringTask extends Task {
         synchronized (getSyncObject()) {
             setStop(false);
             registerForWakeup(waitMillis);
+            startClock();
         }
     }
 

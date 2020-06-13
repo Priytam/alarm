@@ -42,19 +42,26 @@ public abstract class Task implements IAlarmClockRegistration {
         synchronized (getSyncObject()) {
             setStop(false);
             registerForWakeup();
+            startClock();
         }
+    }
+
+    protected void startClock() {
+        getAlarmClock().start();
     }
 
     public void stop() {
         synchronized (getSyncObject()) {
             setStop(true);
             unregister();
+            getAlarmClock().shutdown();
         }
     }
 
     public void restart() {
         if (isStop()) {
             unregister();
+            getAlarmClock().shutdown();
             start();
         }
     }

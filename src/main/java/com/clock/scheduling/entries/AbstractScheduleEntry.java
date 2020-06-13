@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import java.util.Calendar;
 import java.util.Random;
 
-abstract class AbstractScheduleEntry implements IScheduleEntry {
+public abstract class AbstractScheduleEntry implements IScheduleEntry {
 	transient private static Logger log = Logger.getLogger(AbstractScheduleEntry.class);
 	protected Calendar calendar = Calendar.getInstance();
 	private final int field;

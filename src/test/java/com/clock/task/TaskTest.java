@@ -1,6 +1,5 @@
 package com.clock.task;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,24 +9,12 @@ import org.junit.Test;
  * Time: 7:36 pm
  * email: priytam.pandey@cleartrip.com
  */
-public class TaskTest extends TestCase {
-
-    class TaskResult {
-        boolean taskPerformed = false;
-
-        public boolean isTaskPerformed() {
-            return taskPerformed;
-        }
-
-        public void setTaskPerformed(boolean taskPerformed) {
-            this.taskPerformed = taskPerformed;
-        }
-    }
+public class TaskTest extends AbstractTestCase {
 
     @Test
-    public void shouldExecuteTask() {
-        TaskResult taskResult = new TaskResult();
-        Task task = new Task() {
+    public void shouldExecuteTask() throws InterruptedException {
+        FlagTaskResult taskResult = new FlagTaskResult();
+        new Task() {
             @Override
             public boolean performTask(Object context) {
                 taskResult.setTaskPerformed(true);
@@ -38,10 +25,26 @@ public class TaskTest extends TestCase {
             public void onTaskFailure(Object context) {
 
             }
-        };
+        }.start();
+        Thread.sleep(2000);
+        Assert.assertTrue(taskResult.isTaskPerformed());
+    }
 
-        task.start();
+    @Test
+    public void shouldExecuteOnTaskFailure() throws InterruptedException {
+        FlagTaskResult taskResult = new FlagTaskResult();
+        new Task() {
+            @Override
+            public boolean performTask(Object context) {
+                return false;
+            }
 
+            @Override
+            public void onTaskFailure(Object context) {
+                taskResult.setTaskPerformed(true);
+            }
+        }.start();
+        Thread.sleep(2000);
         Assert.assertTrue(taskResult.isTaskPerformed());
     }
 }

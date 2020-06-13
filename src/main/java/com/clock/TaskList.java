@@ -9,7 +9,7 @@ import java.util.TreeSet;
 
 public class TaskList {
     transient private static Logger log = Logger.getLogger(TaskList.class);
-    private TreeSet<AlarmClockRequest> treeTaskList;
+    private final TreeSet<AlarmClockRequest> treeTaskList;
     private long serialTaskNumber;
     private long currentTasks;
     private TreeMap<Long, AlarmClockRequest> map = null;

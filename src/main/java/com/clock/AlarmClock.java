@@ -69,7 +69,7 @@ public class AlarmClock implements Runnable {
             long currentTimeMillis = System.currentTimeMillis();
             if (lastTimeSeen > currentTimeMillis + ALLOWED_TIME_REGRESSION) {
                 log.warn("handleTimeRegression() - discovered time violation");
-                log.warn("handleTimeRegression() - m_lLastTimeSeen(" + lastTimeSeen + ") > currentTimeMillis(" + currentTimeMillis + ") + allowdDelta(" + ALLOWED_TIME_REGRESSION + ")");
+                log.warn("handleTimeRegression() - lastTimeSeen(" + lastTimeSeen + ") > currentTimeMillis(" + currentTimeMillis + ") + allowdDelta(" + ALLOWED_TIME_REGRESSION + ")");
                 log.warn("handleTimeRegression() - probably clock was adjusted on machine");
                 log.warn("handleTimeRegression() - will trigger all entries in AlarmClock before " + requestNumber);
                 getTaskList().setLastTimeRegressionViolationRequest(requestNumber - 1);
@@ -141,7 +141,7 @@ public class AlarmClock implements Runnable {
     }
 
     protected ThreadPoolExecutor createThreadPool(int numOfThread) {
-        return (ThreadPoolExecutor)Executors.newFixedThreadPool(numOfThread, r -> new Thread(r, getThreadPoolName()));
+        return (ThreadPoolExecutor) Executors.newFixedThreadPool(numOfThread, r -> new Thread(r, getThreadPoolName()));
     }
 
     @Override
@@ -152,7 +152,6 @@ public class AlarmClock implements Runnable {
         while (active) {
             try {
                 executeNextTask();
-
             } catch (Throwable t) {
                 log.error("run() - got throwable will go to sleep for 60 sec!!!", t);
                 try {
@@ -171,12 +170,12 @@ public class AlarmClock implements Runnable {
     }
 
     protected void executeNextTask() {
-        AlarmClockRequest m_reqRequest = getTaskList().getFirstTask();
+        AlarmClockRequest reqRequest = getTaskList().getFirstTask();
         if (log.isDebugEnabled()) {
-            log.debug("run() - will execute " + m_reqRequest);
+            log.debug("run() - will execute " + reqRequest);
         }
-        if (null != m_reqRequest) {
-            execute(m_reqRequest);
+        if (null != reqRequest) {
+            execute(reqRequest);
         }
     }
 
@@ -184,8 +183,7 @@ public class AlarmClock implements Runnable {
         log = newLog;
     }
 
-    public void setTaskList(
-            TaskList list) {
+    public void setTaskList(TaskList list) {
         taskList = list;
     }
 
@@ -196,9 +194,13 @@ public class AlarmClock implements Runnable {
     public void shutdown() {
         log.info("shutdown()");
         active = false;
+        if (null != sltp) {
+            sltp.shutdown();
+        }
         if (null != getThread()) {
             getThread().interrupt();
         }
+
     }
 
     public boolean isStopped() {
