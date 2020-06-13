@@ -105,7 +105,7 @@ public class ScheduleExample {
 
 **output**
 ```text
-	        HourlyEntry (0m:0s) 
+	                HourlyEntry (0m:0s) 
 				Next time will be at: Sun Jun 14 02:00:00 IST 2020
 			DailyEntry (5h:10m:0s) 
 				Next time will be at: Sun Jun 14 05:10:00 IST 2020
@@ -125,34 +125,11 @@ public class RecurringTaskExample {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        startStop();
-        asyncTaskExecution();
+        recurringSyncTaskExecution();//default
+        recurringAsyncTaskExecution();
     }
 
-    private static void asyncTaskExecution() throws InterruptedException {
-        RecurringTask recurringTask = new RecurringTask(1000) {
-            @Override
-            public boolean performTask(Object context) {
-                System.out.println("Performing task");;
-                return true;
-            }
-
-            @Override
-            public void onTaskFailure(Object context) {
-                System.out.println("Performing task failed");;
-            }
-        };
-        // set async task execution
-        recurringTask.setTaskExecution(new AsyncTaskExecution(4));
-
-        //start recurring task
-        recurringTask.start();
-        Thread.sleep(4000);
-        //stop  task
-        recurringTask.stop();
-    }
-
-    private static void startStop() throws InterruptedException {
+    private static void recurringSyncTaskExecution() throws InterruptedException {
         // Create a recurring task with 'performTask' and 'onTaskFailure'
         RecurringTask recurringTask = new RecurringTask(1000) {
             @Override
@@ -171,6 +148,29 @@ public class RecurringTaskExample {
         recurringTask.start();
         Thread.sleep(4000);
 
+        //stop  task
+        recurringTask.stop();
+    }
+    
+    private static void recurringAsyncTaskExecution() throws InterruptedException {
+        RecurringTask recurringTask = new RecurringTask(1000) {
+            @Override
+            public boolean performTask(Object context) {
+                System.out.println("Performing task");;
+                return true;
+            }
+
+            @Override
+            public void onTaskFailure(Object context) {
+                System.out.println("Performing task failed");;
+            }
+        };
+        // set async task execution
+        recurringTask.setTaskExecution(new AsyncTaskExecution(4));
+
+        //start recurring task
+        recurringTask.start();
+        Thread.sleep(4000);
         //stop  task
         recurringTask.stop();
     }
