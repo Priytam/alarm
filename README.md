@@ -66,6 +66,8 @@ ring ring1
 
 ```
 
+**[Back to top](#basic-example-and-usage)**
+
 ## Scheduling
 
 ```java
@@ -110,6 +112,8 @@ public class ScheduleExample {
 			WeeklyEntry (2d:5h:10m:0s) 
 				Next time will be at: Mon Jun 15 05:10:00 IST 2020
 ```
+
+**[Back to top](#basic-example-and-usage)**
 
 ## Recurring
 ```java
@@ -186,8 +190,9 @@ Performing task
 Performing task
 8011 [main] INFO com.clock.AlarmClock  - shutdown()
 ```
+**[Back to top](#basic-example-and-usage)**
 
-#Task
+## Task
 
 ```java
 public class TaskExample {
@@ -212,3 +217,4 @@ public class TaskExample {
 }
 
 ```
+**[Back to top](#basic-example-and-usage)**
