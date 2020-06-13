@@ -1,6 +1,9 @@
 package com.clock.example;
 
 import com.clock.AlarmClock;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 
 /**
  * User: Priytam Jee Pandey
@@ -9,23 +12,34 @@ import com.clock.AlarmClock;
  * email: priytam.pandey@cleartrip.com
  */
 public class AlarmClockExample {
+    static {
+        LogManager.getRootLogger().setLevel(Level.INFO);
+        BasicConfigurator.configure();
+    }
+
     public static void main(String[] args) throws InterruptedException {
-        AlarmClock test = AlarmClock.getInstance("Test");
+        // Get and instance of clock
+        AlarmClock clock = AlarmClock.getInstance("TestClock");
 
-        test.register(2000, id -> System.out.println("ring ring"));
-        test.register(2000, id -> System.out.println("ring ring1"));
+        //register to print 'ring ring' after 2 sec
+        clock.register(2000, id -> System.out.println("ring ring"));
 
-        test.start();
+        //register to print 'ring ring1' after 3 sec
+        clock.register(3000, id -> System.out.println("ring ring1"));
 
-        test.register(2000, id -> System.out.println("ring ring2"));
-        test.register(2000, id -> System.out.println("ring ring3"));
+        //start this
+        clock.start();
 
-        System.out.println(test.getTaskList().showEntries());
-        System.out.println(test.getTaskList());
+        //register to print 'ring ring2' after 2 sec
+        clock.register(2000, id -> System.out.println("ring ring2"));
+
+        //register to print 'ring ring3' after 2 sec
+        clock.register(1000, id -> System.out.println("ring ring3"));
+
+        //show all alarms set
+        System.out.println(clock.getTaskList().showEntries());
 
         Thread.sleep( 6000);
-
-        System.out.println(test.getTaskList());
-        test.shutdown();
+        clock.shutdown();
     }
 }

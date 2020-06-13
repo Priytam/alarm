@@ -34,6 +34,7 @@ public class Schedule {
         setAlarmClockName(clockName);
         log.debug("Starting schedule thread pool");
         threadPool = Executors.newFixedThreadPool(poolSize, r -> new Thread(r, SCHEDULE_THREAD_POOL));
+        getAlarmClock().start();
     }
 
     private class ScheduleRegistration implements IAlarmClockRegistration {
@@ -259,7 +260,7 @@ public class Schedule {
             $ += "\n\t\t\t" + s.getEntry().getDescription() + " ";
             $ += "\n\t\t\t\tNext time will be at: " + s.getEntry().getNextInvocationTime().getTime();
         }
-        return $;
+        return $ + "\n";
     }
 
     public long getNextExecutionTime() {
@@ -302,5 +303,10 @@ public class Schedule {
             lstSchedules.add(iScheduleEntry.getDescription());
         }
         return Joiner.on(",").join(lstSchedules);
+    }
+
+    public void shutDown() {
+        threadPool.shutdown();
+        getAlarmClock().shutdown();
     }
 }

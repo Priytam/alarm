@@ -1,6 +1,5 @@
 package com.clock.example;
 
-import com.clock.AlarmClock;
 import com.clock.task.AsyncTaskExecution;
 import com.clock.task.RecurringTask;
 import org.apache.log4j.BasicConfigurator;
@@ -20,62 +19,54 @@ public class RecurringTaskExample {
         BasicConfigurator.configure();
     }
 
-    private static class TaskResult {
-        int count = 0;
-
-        public void increment() {
-            count++;
-        }
-
-        public int getCount() {
-            return count;
-        }
-    }
-
     public static void main(String[] args) throws InterruptedException {
         startStop();
         asyncTaskExecution();
     }
 
     private static void asyncTaskExecution() throws InterruptedException {
-        TaskResult taskResult = new TaskResult();
         RecurringTask recurringTask = new RecurringTask(2000) {
             @Override
             public boolean performTask(Object context) {
-                taskResult.increment();
+                System.out.println("Performing task");;
                 return true;
             }
 
             @Override
             public void onTaskFailure(Object context) {
-
+                System.out.println("Performing task failed");;
             }
         };
+        // set async task execution
         recurringTask.setTaskExecution(new AsyncTaskExecution(4));
-        recurringTask.start();
 
+        //start recurring task
+        recurringTask.start();
         Thread.sleep(4000);
+        //stop  task
         recurringTask.stop();
     }
 
     private static void startStop() throws InterruptedException {
-        TaskResult taskResult = new TaskResult();
+        // Create a recurring task with 'performTask' and 'onTaskFailure'
         RecurringTask recurringTask = new RecurringTask(2000) {
             @Override
             public boolean performTask(Object context) {
-                taskResult.increment();
+                System.out.println("Performing task");;
                 return true;
             }
 
             @Override
             public void onTaskFailure(Object context) {
-
+                System.out.println("Performing task failed");;
             }
         };
-        recurringTask.start();
 
+        //start recurring task
+        recurringTask.start();
         Thread.sleep(4000);
+
+        //stop  task
         recurringTask.stop();
     }
-
 }
