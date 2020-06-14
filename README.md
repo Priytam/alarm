@@ -5,7 +5,7 @@
  - Recurring Task
  - Sync and Async execution of Task
  
- [![GitHub license](https://img.shields.io/github/license/Priytam/clock.svg)](https://github.com/Priytam/clock/blob/master/LICENSE)
+ [![GitHub license](https://img.shields.io/github/license/Priytam/clock)](https://github.com/Priytam/clock/blob/master/LICENSE)
  [![Build Status](https://travis-ci.org/Priytam/clock.svg?branch=master)](https://travis-ci.org/Priytam/clock)
  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.priytam/clock/badge.svg)](https://search.maven.org/search?q=g:com.github.priytam%20AND%20a:clock)
  
