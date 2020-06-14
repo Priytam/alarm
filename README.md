@@ -25,7 +25,7 @@ Maven dependency
 ```xml
 <dependency>
   <groupId>com.github.priytam</groupId>
-  <artifactId>clock</artifactId>
+  <artifactId>alarm</artifactId>
   <version>1.0.0</version>
 </dependency>
 ```
