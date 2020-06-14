@@ -66,14 +66,14 @@ ring ring1
 
 ```
 Useful Methods
-- start/shutdown : start and stop clock
+- start/shutdown: start and stop clock
 - register (long, registrants): register an task
 - registerWeaK (long, registrants): register a weak task meaning in high load GC may clean this registry
-- setNumberOfThreads (int): clock task(registrant) execution pool size
-- setMaxPendingThreads (int): max pending task (registrant)
-- setThrowOnLatencyViolations (boolean): will throw error if set true and there is latency in execution or else execute
-- setStatisticsLogger (IAlarmClockStatisticsLogger) : to record stats
-- getTaskList() : All Task entries registered
+- setNumberOfThreads (int): clock task(registrant) execution pool size, default 2
+- setMaxPendingThreads (int): max pending task (registrant), default 4000
+- setThrowOnLatencyViolations (boolean): will throw error if set true and there is latency in execution or else execute, default true
+- setStatisticsLogger (IAlarmClockStatisticsLogger): to record stats
+- getTaskList(): All Task entries registered
 
 **[Back to top](#basic-example-and-usage)**
 
@@ -124,7 +124,7 @@ public class ScheduleExample {
 				Next time will be at: Mon Jun 15 05:10:00 IST 2020
 ```
 Useful methods
-- Schedule(String clockName, int poolSize) : with custom pool size
+- Schedule(String clockName, int poolSize) : with custom pool size, default size 10
 - start/shutdown : start and stop schedule
 - register (Runnable) : schedule a task for execution
 - unregister (Runnable) : remove task from schedule
@@ -135,7 +135,7 @@ Useful methods
 - getStatus(): String status of scheduled tasks
 - unregisterAll() : unregister all task
 - getNextExecutionTime() : next execution time
-- getScheduleString(): schedule short info
+- getScheduleString() : schedule short info
 
 **[Back to top](#basic-example-and-usage)**
 
@@ -218,6 +218,17 @@ Performing task
 8011 [main] INFO com.clock.AlarmClock  - shutdown()
 ```
 Useful methods
+- RecurringTask(long wakeupIntervalMilli, boolean registerBeforeExecution, boolean runImmediately) :
+    - (wakeupIntervalMilli) interval of recurrence 
+    - (registerBeforeExecution) if true next occurrence will be registered before  executing current 
+    - (runImmediately) if true will run first execution immediately 
+- start/stop: to start and stop recurring task
+- forceRestart: do not wait for running task
+- setTaskExecution(TaskExecution): default is sync task execution [SyncTaskExecution, AsyncTaskExecution]
+- setContext(Object): same object will be passed in perform task function
+
+
+**Note:** if performTask() returns false then onTaskFailure() will be called
 
 **[Back to top](#basic-example-and-usage)**
 
@@ -248,4 +259,11 @@ public class TaskExample {
 }
 
 ```
+Useful methods
+- start/stop: to start and stop recurring task
+- setTaskExecution(TaskExecution): default is sync task execution [SyncTaskExecution, AsyncTaskExecution]
+- forceRestart: do not wait for running task
+- setContext(Object): same object will be passed in perform task function
+**Note:** if performTask() returns false then onTaskFailure() will be called
+
 **[Back to top](#basic-example-and-usage)**
