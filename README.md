@@ -13,6 +13,20 @@
   1. [Task](#task)
 
   
+Maven dependency  
+```xml
+<dependency>
+  <groupId>com.github.priytam</groupId>
+  <artifactId>clock</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+Gradle dependency  
+```groovy
+compile 'com.github.priytam:clock:1.0.0'
+```
+
 ## AlarmClock
 
 ```java

@@ -1,7 +1,7 @@
 package com.clock;
 
-import com.clock.stopwatch.IStopWatch;
-import com.clock.stopwatch.StopWatch;
+import com.stopwatch.IStopWatch;
+import com.stopwatch.StopWatch;
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.TimeUnit;
