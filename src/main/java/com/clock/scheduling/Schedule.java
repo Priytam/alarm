@@ -21,9 +21,7 @@ public class Schedule {
     private final ExecutorService threadPool;
     private static final int DEFAULT_THREAD_COUNT = 10;
     private static final String SCHEDULE_THREAD_POOL = "SCHEDULE_THREAD_POOL";
-    private String executionIntervalExp = null;
     private String alarmClockName = null;
-    private long executionInterval = Long.MIN_VALUE;
     private int hash;
 
     public Schedule(String alarmClockName) {
@@ -271,22 +269,6 @@ public class Schedule {
         ArrayList<ScheduleRegistration> l = Lists.newArrayList(registrations);
         l.sort(c);
         return l.get(0).getEntry().getNextInvocationTime().getTimeInMillis();
-    }
-
-    public long getExecutionInterval() {
-        return executionInterval;
-    }
-
-    public void setExecutionInterval(long executionIntervalMillis) {
-        executionInterval = executionIntervalMillis;
-    }
-
-    public String getExecutionIntervalExpression() {
-        return executionIntervalExp;
-    }
-
-    public void setExecutionIntervalExpression(String executionIntervalExp) {
-        this.executionIntervalExp = executionIntervalExp;
     }
 
     public int getHash() {

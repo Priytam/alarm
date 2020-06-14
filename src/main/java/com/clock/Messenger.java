@@ -12,16 +12,15 @@ class Messenger implements Runnable {
     public static long MAX_RUN_TIME_ALLOWED = TimeUnit.SECONDS.toMillis(3);
     public static long MAX_LATE_TIME_ALLOWED = TimeUnit.MINUTES.toMillis(2);
     public static boolean REPORT_STATISTICS = true;
-    private static boolean CHECK_LATENCY = true;
     private IAlarmClockStatisticsLogger statLogger;
     private final String clockName;
-    private final boolean alertOnLatencyViolations;
+    private final boolean throwOnLatencyViolations;
 
-    public Messenger(AlarmClockRequest request, IAlarmClockStatisticsLogger statLogger, String clockName, boolean alertOnLatencyViolations) {
+    public Messenger(AlarmClockRequest request, IAlarmClockStatisticsLogger statLogger, String clockName, boolean throwOnLatencyViolations) {
         super();
         this.statLogger = statLogger;
         this.clockName = clockName;
-        this.alertOnLatencyViolations = alertOnLatencyViolations;
+        this.throwOnLatencyViolations = throwOnLatencyViolations;
         setRequest(request);
     }
 
@@ -34,7 +33,7 @@ class Messenger implements Runnable {
         if (log.isDebugEnabled()) {
             log.debug("will run target " + getTarget());
         }
-        if (CHECK_LATENCY && alertOnLatencyViolations) {
+        if (throwOnLatencyViolations) {
             long timeTillRun = -request.getTimeMarginFromCurrentTime();
             if ((timeTillRun > MAX_LATE_TIME_ALLOWED)) {
                 throw new Error("AlarmClock task is late: AlarmClock = " + clockName + ", Task =  " + request.getAlarmClockRegistration() + ", Late = " + timeTillRun + " ms (MAX_LATE_TIME_ALLOWED = " + MAX_LATE_TIME_ALLOWED + " ms)");
@@ -45,7 +44,7 @@ class Messenger implements Runnable {
             getTarget().wakeUp(getRequestID());
             stopWatch.pause();
             log.debug("elapsedMillis " + stopWatch.elapsedMillis());
-            if (alertOnLatencyViolations && stopWatch.elapsedMillis() > MAX_RUN_TIME_ALLOWED)
+            if (throwOnLatencyViolations && stopWatch.elapsedMillis() > MAX_RUN_TIME_ALLOWED)
                 log.warn("AlarmClock task " + request.getAlarmClockRegistration() + " took " + stopWatch.elapsedMillis() + " ms, Max allowed time is " + MAX_RUN_TIME_ALLOWED + " ms");
 
             if (REPORT_STATISTICS && null != statLogger) {
@@ -54,7 +53,6 @@ class Messenger implements Runnable {
                 if (index != -1) {
                     name = name.substring(0, index);
                 }
-
                 statLogger.recordTask(clockName + " : " + name, stopWatch.elapsedMillis());
             }
         } finally {

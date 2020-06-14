@@ -34,7 +34,7 @@ public class BoundedAlarmClock extends AlarmClock {
         cClock.setNumberOfThreads(maxThreadPoolSize);
         cClock.setMinimumNumberOfThreads(minThreadPoolSize);
         cClock.setClockName(sName);
-        cClock.setAlertOnLatencyViolations(alertOnLatencyViolations);
+        cClock.setThrowOnLatencyViolations(alertOnLatencyViolations);
         mpClocks.put(sName, cClock);
         return cClock;
 

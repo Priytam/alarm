@@ -33,8 +33,8 @@ public class AlarmClock implements Runnable {
     private boolean mainClock = true;
     private long lastTimeSeen = 0;
     private final Object timeRegressionSycObject = new Object();
-    private boolean alertOnLatencyViolations = true;
-    private ThreadPoolExecutor sltp;
+    private boolean throwOnLatencyViolations = true;
+    private ThreadPoolExecutor threadPool;
 
     protected AlarmClock() {
         setTaskList(new TaskList());
@@ -137,7 +137,7 @@ public class AlarmClock implements Runnable {
         if (sNumber != null) {
             numOfThread = Integer.getInteger(sNumber);
         }
-        sltp = createThreadPool(numOfThread);
+        threadPool = createThreadPool(numOfThread);
     }
 
     protected ThreadPoolExecutor createThreadPool(int numOfThread) {
@@ -164,7 +164,7 @@ public class AlarmClock implements Runnable {
         }
         threadsWakeupFinished = true;
         long registeredNumber = getNumberOfRequestsInList();
-        log.debug("run() - alarm clock sutdown with " + registeredNumber + " registered objects");
+        log.debug("run() - alarm clock shutdown with " + registeredNumber + " registered objects");
         cleanUp();
         log.debug("run() - exit ...");
     }
@@ -194,8 +194,8 @@ public class AlarmClock implements Runnable {
     public void shutdown() {
         log.info("shutdown()");
         active = false;
-        if (null != sltp) {
-            sltp.shutdown();
+        if (null != getThreadPool()) {
+            getThreadPool().shutdown();
         }
         if (null != getThread()) {
             getThread().interrupt();
@@ -219,7 +219,7 @@ public class AlarmClock implements Runnable {
         if (isMainClock() && (getThreadPool().getQueue().size() > getMaxPendingThreads())) {
             log.info("number of pending request in ThreadPool = " + getThreadPool().getQueue().size() + "> MAX_PENDING_THREADS(" + getMaxPendingThreads() + ")");
         }
-        Messenger runnable = new Messenger(request, statLogger, getClockName(), alertOnLatencyViolations);
+        Messenger runnable = new Messenger(request, statLogger, getClockName(), throwOnLatencyViolations);
         runTask(runnable);
     }
 
@@ -228,7 +228,7 @@ public class AlarmClock implements Runnable {
     }
 
     private ThreadPoolExecutor getThreadPool() {
-        return sltp;
+        return threadPool;
     }
 
     public int getNumberOfThreads() {
@@ -269,13 +269,13 @@ public class AlarmClock implements Runnable {
         cClock.setThreadPoolName(sThreadPoolName);
         cClock.setNumberOfThreads(iThreadPoolSize);
         cClock.setClockName(sName);
-        cClock.setAlertOnLatencyViolations(alertOnLatencyViolations);
+        cClock.setThrowOnLatencyViolations(alertOnLatencyViolations);
         mpClocks.put(sName, cClock);
         return cClock;
     }
 
-    protected void setAlertOnLatencyViolations(boolean alertOnLatencyViolations) {
-        this.alertOnLatencyViolations = alertOnLatencyViolations;
+    protected void setThrowOnLatencyViolations(boolean throwOnLatencyViolations) {
+        this.throwOnLatencyViolations = throwOnLatencyViolations;
     }
 
     public static AlarmClock create(String sName, String sThreadPoolName, int iThreadPoolSize) {

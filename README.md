@@ -1,5 +1,5 @@
 # AlarmClock
- AlarmClock with the features of
+ AlarmClock with features
  - Alarm to wakeup 
  - Sync and Async Task
  - Scheduling Task
@@ -65,6 +65,15 @@ ring ring2
 ring ring1
 
 ```
+Useful Methods
+- start/shutdown : start and stop clock
+- register (long, registrants): register an task
+- registerWeaK (long, registrants): register a weak task meaning in high load GC may clean this registry
+- setNumberOfThreads (int): clock task(registrant) execution pool size
+- setMaxPendingThreads (int): max pending task (registrant)
+- setThrowOnLatencyViolations (boolean): will throw error if set true and there is latency in execution or else execute
+- setStatisticsLogger (IAlarmClockStatisticsLogger) : to record stats
+- getTaskList() : All Task entries registered
 
 **[Back to top](#basic-example-and-usage)**
 
@@ -92,6 +101,8 @@ public class ScheduleExample {
 
         //will print 'Hello world' every monday at 5:10
         helloWorldSchedule.addEntry(new WeeklyScheduleEntry(WeeklyScheduleEntry.MONDAY, 5, 10));
+
+        //print schedule Status
         System.out.println(helloWorldSchedule.getStatus());
 
         //register another task to print hello Priytam and will run with all entries added above
@@ -112,6 +123,19 @@ public class ScheduleExample {
 			WeeklyEntry (2d:5h:10m:0s) 
 				Next time will be at: Mon Jun 15 05:10:00 IST 2020
 ```
+Useful methods
+- Schedule(String clockName, int poolSize) : with custom pool size
+- start/shutdown : start and stop schedule
+- register (Runnable) : schedule a task for execution
+- unregister (Runnable) : remove task from schedule
+- addEntry (IScheduleEntry) : add an entry [HourlyEntry, DailyEntry, WeeklyEntry] to schedule for all registered tasks
+- removeEntry (IScheduleEntry): remove an entry [HourlyEntry, DailyEntry, WeeklyEntry] from schedule for all registered tasks
+- getScheduleEntries : List<IScheduleEntry> all entries in schedule
+- getRegistrants : List<Runnable> all tasks registered in schedule
+- getStatus(): String status of scheduled tasks
+- unregisterAll() : unregister all task
+- getNextExecutionTime() : next execution time
+- getScheduleString(): schedule short info
 
 **[Back to top](#basic-example-and-usage)**
 
@@ -130,7 +154,8 @@ public class RecurringTaskExample {
     }
 
     private static void recurringSyncTaskExecution() throws InterruptedException {
-        // Create a recurring task with 'performTask' and 'onTaskFailure'
+        // Create a recurring task with interval 1000 ms by 
+        // implementing 'performTask' and 'onTaskFailure'
         RecurringTask recurringTask = new RecurringTask(1000) {
             @Override
             public boolean performTask(Object context) {
@@ -153,6 +178,8 @@ public class RecurringTaskExample {
     }
     
     private static void recurringAsyncTaskExecution() throws InterruptedException {
+        // Create a recurring task with interval 1000 ms by 
+        // implementing 'performTask' and 'onTaskFailure'
         RecurringTask recurringTask = new RecurringTask(1000) {
             @Override
             public boolean performTask(Object context) {
@@ -190,6 +217,8 @@ Performing task
 Performing task
 8011 [main] INFO com.clock.AlarmClock  - shutdown()
 ```
+Useful methods
+
 **[Back to top](#basic-example-and-usage)**
 
 ## Task
@@ -201,7 +230,9 @@ public class TaskExample {
         BasicConfigurator.configure();
     }
     public static void main(String[] args) {
-        new Task() {
+        // Create a recurring task with delay 1000 ms by 
+        // implementing 'performTask' and 'onTaskFailure'
+        new Task(1000) {
             @Override
             public boolean performTask(Object context) {
                 System.out.println("Perform task");
