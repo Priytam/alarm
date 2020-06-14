@@ -240,7 +240,7 @@ public class TaskExample {
         BasicConfigurator.configure();
     }
     public static void main(String[] args) {
-        // Create a recurring task with delay 1000 ms by 
+        // Create a task to execute after 1000 ms by 
         // implementing 'performTask' and 'onTaskFailure'
         new Task(1000) {
             @Override
