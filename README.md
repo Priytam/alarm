@@ -5,6 +5,14 @@
  - Recurring Task
  - Sync and Async execution of Task
  
+ [![GitHub license](https://img.shields.io/github/license/Priytam/clock.svg)](https://github.com/Priytam/clock/blob/master/LICENSE)
+ [![Build Status](https://travis-ci.org/Priytam/clock.svg?branch=master)](https://travis-ci.org/Priytam/clock)
+ [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.priytam/clock/badge.svg)](https://search.maven.org/search?q=g:com.github.priytam%20AND%20a:clock)
+ 
+ [![HitCount](http://hits.dwyl.io/Priytam/clock.svg?style=svg)](http://hits.dwyl.io/Priytam/clock)
+ [![Open Source Love svg2](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+ [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+
 
 # Basic Example and Usage
   1. [AlarmClock](#alarmclock)
