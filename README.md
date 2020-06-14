@@ -1,13 +1,12 @@
 # AlarmClock
  AlarmClock with features
  - Alarm to wakeup 
- - Sync and Async Task
  - Scheduling Task
  - Recurring Task
+ - Sync and Async execution of Task
  
 
 # Basic Example and Usage
-
   1. [AlarmClock](#alarmclock)
   1. [Scheduling](#scheduling)
   1. [Recurring](#recurring)
@@ -264,6 +263,7 @@ Useful methods
 - setTaskExecution(TaskExecution): default is sync task execution [SyncTaskExecution, AsyncTaskExecution]
 - forceRestart: do not wait for running task
 - setContext(Object): same object will be passed in perform task function
+
 **Note:** if performTask() returns false then onTaskFailure() will be called
 
 **[Back to top](#basic-example-and-usage)**
